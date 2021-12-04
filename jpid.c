@@ -55,22 +55,16 @@ float JPID_update(JPID *jpid, const float target, const float measurement)
 {
     float error = target - measurement;
 
-    printf("error:%lf\n", error);
-
     jpid->errorAccumulation = JPID_clip(jpid->errorAccumulation + error, jpid->errorAccumulationMin, jpid->errorAccumulationMax);
 
     float pTerm = jpid->kP * error;
-    printf("pTerm:%lf\n", pTerm);
     float iTerm = jpid->kI * jpid->errorAccumulation;
-    printf("iTerm:%lf\n", iTerm);
     float dTerm = jpid->kD * (error - jpid->prevError);
-    printf("dTerm:%lf\n", dTerm);
 
     jpid->prevError = error;
 
     float outputUnclipped = pTerm + iTerm + dTerm;
     float outputClipped = JPID_clip(outputUnclipped, jpid->outputMin, jpid->outputMax);
-    printf("clipped:%lf\n", outputClipped);
 
     jpid->errorAccumulation -= (outputUnclipped - outputClipped) * jpid->kA * jpid->kI;
 

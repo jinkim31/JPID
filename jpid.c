@@ -34,7 +34,6 @@ void JPID_setGainPIDA(JPID* jpid, const float kP, const float kI, const float kD
     jpid->kA = kA;
 }
 
-
 void JPID_setAntiWindup(JPID *jpid, const float kA)
 {
     jpid->kA = kA;

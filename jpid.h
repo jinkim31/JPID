@@ -20,7 +20,9 @@ typedef struct
 
 void JPID_init(JPID *jpid);
 
-void JPID_setGain(JPID* jpid, const float kP, const float kI, const float kD);
+void JPID_setGainPID(JPID* jpid, const float kP, const float kI, const float kD);
+
+void JPID_setGainPIDA(JPID* jpid, const float kP, const float kI, const float kD,const float kA);
 
 void JPID_setAntiWindup(JPID* jpid, const float kA);
 

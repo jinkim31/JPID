@@ -19,12 +19,21 @@ void JPID_init(JPID *jpid)
     jpid->outputMax = FLT_MAX;
 }
 
-void JPID_setGain(JPID *jpid, const float kP, const float kI, const float kD)
+void JPID_setGainPID(JPID *jpid, const float kP, const float kI, const float kD)
 {
     jpid->kP = kP;
     jpid->kI = kI;
     jpid->kD = kD;
 }
+
+void JPID_setGainPIDA(JPID* jpid, const float kP, const float kI, const float kD,const float kA)
+{
+    jpid->kP = kP;
+    jpid->kI = kI;
+    jpid->kD = kD;
+    jpid->kA = kA;
+}
+
 
 void JPID_setAntiWindup(JPID *jpid, const float kA)
 {

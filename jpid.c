@@ -3,7 +3,6 @@
 //
 
 #include "jpid.h"
-#include <stdio.h>
 
 void JPID_init(JPID *jpid)
 {

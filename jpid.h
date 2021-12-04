@@ -30,8 +30,10 @@ void JPID_setOutputMinMax(JPID* jpid, const float min, const float max);
 
 void JPID_setErrorAccumulationMinMax(JPID* jpid, const float min, const float max);
 
-float JPID_clip(const float x, const float min, const float max);
+const float JPID_clip(const float x, const float min, const float max);
 
-float JPID_update(JPID* jpid, const float target, const float measurement);
+const float JPID_update(JPID* jpid, const float target, const float measurement);
+
+const float JPID_getOutput(JPID* jpid);
 
 #endif //JPID_JPID_H

@@ -51,14 +51,14 @@ void JPID_setErrorAccumulationMinMax(JPID *jpid, const float min, const float ma
     jpid->errorAccumulationMax = max;
 }
 
-float JPID_clip(const float x, const float min, const float max)
+const float JPID_clip(const float x, const float min, const float max)
 {
     if(x < min) return min;
     if(max < x) return max;
     return x;
 }
 
-float JPID_update(JPID *jpid, const float target, const float measurement)
+const float JPID_update(JPID *jpid, const float target, const float measurement)
 {
     float error = target - measurement;
 
@@ -76,5 +76,10 @@ float JPID_update(JPID *jpid, const float target, const float measurement)
     jpid->errorAccumulation -= (outputUnclipped - outputClipped) * jpid->kA * jpid->kI;
 
     jpid->output = outputClipped;
+    return jpid->output;
+}
+
+const float JPID_getOutput(JPID *jpid)
+{
     return jpid->output;
 }

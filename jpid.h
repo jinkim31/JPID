@@ -6,16 +6,20 @@
 #define JPID_JPID_H
 
 #include <float.h>
-#include <stdbool.h>
+
+typedef struct
+{
+    float min, max;
+}MinMax;
 
 typedef struct
 {
     float kP, kI, kD, kA;
     float errorAccumulation;
     float prevError;
-    float errorAccumulationMin, errorAccumulationMax;
+    MinMax errorAccumulationMinMax;
     float output;
-    float outputMin, outputMax;
+    MinMax outputMinMax;
 } JPID;
 
 void JPID_init(JPID *jpid);
@@ -30,7 +34,7 @@ void JPID_setOutputMinMax(JPID* jpid, const float min, const float max);
 
 void JPID_setErrorAccumulationMinMax(JPID* jpid, const float min, const float max);
 
-const float JPID_clip(const float x, const float min, const float max);
+const float JPID_clip(const float x, const MinMax* minMax);
 
 const float JPID_update(JPID* jpid, const float target, const float measurement);
 

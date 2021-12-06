@@ -12,11 +12,11 @@ void JPID_init(JPID *jpid)
     jpid->kA = 0.0f;
     jpid->errorAccumulation = 0.0f;
     jpid->prevError = 0.0f;
-    jpid->errorAccumulationMin = -FLT_MAX;
-    jpid->errorAccumulationMax = FLT_MAX;
+    jpid->errorAccumulationMinMax.min= -FLT_MAX;
+    jpid->errorAccumulationMinMax.max = FLT_MAX;
     jpid->output = 0.0f;
-    jpid->outputMin = -FLT_MAX;
-    jpid->outputMax = FLT_MAX;
+    jpid->outputMinMax.min = -FLT_MAX;
+    jpid->outputMinMax.max = FLT_MAX;
 }
 
 void JPID_setGainPID(JPID *jpid, const float kP, const float kI, const float kD)
@@ -41,20 +41,20 @@ void JPID_setAntiWindup(JPID *jpid, const float kA)
 
 void JPID_setOutputMinMax(JPID *jpid, const float min, const float max)
 {
-    jpid->outputMin = min;
-    jpid->outputMax = max;
+    jpid->outputMinMax.min = min;
+    jpid->outputMinMax.max = max;
 }
 
 void JPID_setErrorAccumulationMinMax(JPID *jpid, const float min, const float max)
 {
-    jpid->errorAccumulationMin = min;
-    jpid->errorAccumulationMax = max;
+    jpid->errorAccumulationMinMax.min = min;
+    jpid->errorAccumulationMinMax.max = max;
 }
 
-const float JPID_clip(const float x, const float min, const float max)
+const float JPID_clip(const float x, const MinMax* minMax)
 {
-    if(x < min) return min;
-    if(max < x) return max;
+    if(x < minMax->min) return minMax->min;
+    if(minMax->max < x) return minMax->max;
     return x;
 }
 
@@ -62,7 +62,7 @@ const float JPID_update(JPID *jpid, const float target, const float measurement)
 {
     float error = target - measurement;
 
-    jpid->errorAccumulation = JPID_clip(jpid->errorAccumulation + error, jpid->errorAccumulationMin, jpid->errorAccumulationMax);
+    jpid->errorAccumulation = JPID_clip(jpid->errorAccumulation + error, &jpid->errorAccumulationMinMax);
 
     float pTerm = jpid->kP * error;
     float iTerm = jpid->kI * jpid->errorAccumulation;
@@ -71,7 +71,7 @@ const float JPID_update(JPID *jpid, const float target, const float measurement)
     jpid->prevError = error;
 
     float outputUnclipped = pTerm + iTerm + dTerm;
-    float outputClipped = JPID_clip(outputUnclipped, jpid->outputMin, jpid->outputMax);
+    float outputClipped = JPID_clip(outputUnclipped, &jpid->outputMinMax);
 
     jpid->errorAccumulation -= (outputUnclipped - outputClipped) * jpid->kA * jpid->kI;
 

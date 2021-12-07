@@ -17,8 +17,8 @@ typedef struct
     float kP, kI, kD, kA;
     float errorAccumulation;
     float prevError;
-    MinMax errorAccumulationMinMax;
     float output;
+    MinMax errorAccumulationMinMax;
     MinMax outputMinMax;
 } JPID;
 

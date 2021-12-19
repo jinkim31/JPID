@@ -73,7 +73,7 @@ const float JPID_update(JPID *jpid, const float target, const float measurement)
     float outputUnclipped = pTerm + iTerm + dTerm;
     float outputClipped = JPID_clip(outputUnclipped, &jpid->outputMinMax);
 
-    jpid->errorAccumulation -= (outputUnclipped - outputClipped) * jpid->kA * jpid->kI;
+    jpid->errorAccumulation -= (outputUnclipped - outputClipped) * jpid->kA;
 
     jpid->output = outputClipped;
     return jpid->output;
